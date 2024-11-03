@@ -140,18 +140,15 @@ cd Python-3.12.0
 ./configure
 make
 sudo make install
-python3.12 --version
+sudo ln -sf /usr/local/bin/python3.12 /usr/bin/python
+python --version
 cd ..
-python3.12 -m pip install --upgrade pip
-python3.12 -m pip --version
-#--------------------------------------------------------------------------------
-# -------------------- install podman-compose ---------------------------------------
-python3.12 -m pip install podman-compose
-#--------------------------------------------------------------------------------
-# -------------------- install Ansible ---------------------------------------
-python3.12 -m pip install ansible
+python -m pip install --upgrade pip
+python -m pip --version
+python -m pip install podman-compose
+python -m pip install ansible
 ansible --version
-#--------------------------------------------------------------------------------
+
 
 %end
 
