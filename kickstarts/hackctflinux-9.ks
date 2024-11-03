@@ -187,7 +187,7 @@ livesys-scripts
 memtest86+
 
 # libreoffice group
-@office-suite
+# @office-suite
 # firefox
 @internet-browser
 
@@ -198,8 +198,8 @@ memtest86+
 @guest-desktop-agents
 @hardware-support
 @input-methods
-@multimedia
-@print-client
+#@multimedia
+#@print-client
 @standard
 @base-x
 
@@ -217,9 +217,9 @@ emerald
 nss-mdns
 
 # Drop things for size
--@3d-printing
+#-@3d-printing
 -@admin-tools
--brasero
+#-brasero
 -gnome-icon-theme
 -gnome-icon-theme-symbolic
 -gnome-logs
@@ -253,7 +253,7 @@ caja-xattr-tags
 dconf-editor
 engrampa
 eom
-filezilla
+#filezilla
 firewall-config
 gnome-disk-utility
 gnome-epub-thumbnailer
@@ -266,7 +266,7 @@ gvfs-fuse
 gvfs-gphoto2
 gvfs-mtp
 gvfs-smb
-hexchat
+#hexchat
 initial-setup-gui
 libmatekbd
 libmatemixer
@@ -316,8 +316,7 @@ simple-scan
 slick-greeter-mate
 system-config-printer
 system-config-printer-applet
-thunderbird
-transmission-gtk
+#thunderbird
 usermode-gtk
 wireplumber
 xdg-user-dirs-gtk
