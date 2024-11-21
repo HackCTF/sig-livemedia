@@ -110,6 +110,88 @@ getent passwd openvpn &>/dev/null || \
     /usr/sbin/useradd -r -g openvpn -s /sbin/nologin -c OpenVPN \
         -d /etc/openvpn openvpn
 
+sudo dnf update -y
+sudo dnf groupinsstall "Development Tools"
+sudo dnf install -y podman iptables curl socat gcc wget tar make
+
+
+cd /tmp
+wget https://ftp.gnu.org/gnu/gdbm/gdbm-1.23.tar.gz
+tar -xvf gdbm-1.23.tar.gz
+cd gdbm-1.23
+./configure
+make
+sudo make install
+
+cd ..
+
+sudo dnf config-manager --set-enabled crb
+sudo dnf update
+sudo dnf install -y gdbm-devel 
+sudo dnf install  -y libnsl2-devel.x86_64 
+sudo dnf install -y openssl-devel bzip2-devel libffi-devel zlib-devel ncurses-devel gdbm-libs sqlite-devel tk-devel xz-devel libuuid-devel tcl-devel readline-devel epel-release 
+sudo dnf install -y libnsl-devel
+sudo dnf install -y htop 
+
+sudo dnf remove -y python
+
+wget https://www.python.org/ftp/python/3.12.0/Python-3.12.0.tgz
+tar -xf Python-3.12.0.tgz
+cd Python-3.12.0
+./configure
+make
+sudo make install
+sudo ln -sf /usr/local/bin/python3.12 /usr/bin/python
+python --version
+cd ..
+python -m pip install --upgrade pip
+python -m pip --version
+python -m pip install podman-compose
+python -m pip install ansible
+ansible --version
+
+sed -i '/^Port /d' "/etc/ssh/sshd_config"
+echo "Port 2223" >> "/etc/ssh/sshd_config"
+
+# Crear el script de primer arranque
+cat << 'EOF' > /etc/rc.d/firstboot.sh
+#!/bin/bash
+
+git clone https://github.com/HackCTF/ssh_secure_project.git
+cd ssh_secure_project
+ansible-playbook playbooks/ssh_security.yml
+
+git clone https://github.com/HackCTF/ansible-quay-setup.git
+cd ansible-quay-setup
+ansible-playbook playbooks/setup.yml
+
+git clone https://github.com/HackCTF/kubespray
+cd kubespray
+python -m pip install -r requirements.txt
+ansible-playbook -i ./inventory/sample/inventory.ini cluster.yml
+
+echo "Arranque completado."
+EOF
+
+# Hacer que el script sea ejecutable
+chmod +x /etc/rc.d/firstboot.sh
+
+# Crear /etc/rc.d/rc.local para ejecutar el script en el primer arranque
+cat << 'EOF' > /etc/rc.d/rc.local
+#!/bin/bash
+# Ejecutar el script de primer arranque
+/etc/rc.d/firstboot.sh
+EOF
+
+# Hacer que rc.local sea ejecutable
+chmod +x /etc/rc.d/rc.local
+
+# Habilitar el servicio rc-local
+systemctl enable rc-local
+
+
+EOF
+ 
 %end
 
 %packages
@@ -144,7 +226,7 @@ livesys-scripts
 memtest86+
 
 # libreoffice group
-@office-suite
+# @office-suite
 # firefox
 @internet-browser
 
@@ -155,8 +237,8 @@ memtest86+
 @guest-desktop-agents
 @hardware-support
 @input-methods
-@multimedia
-@print-client
+#@multimedia
+#@print-client
 @standard
 @base-x
 
@@ -174,9 +256,9 @@ emerald
 nss-mdns
 
 # Drop things for size
--@3d-printing
+#-@3d-printing
 -@admin-tools
--brasero
+#-brasero
 -gnome-icon-theme
 -gnome-icon-theme-symbolic
 -gnome-logs
@@ -210,7 +292,7 @@ caja-xattr-tags
 dconf-editor
 engrampa
 eom
-filezilla
+#filezilla
 firewall-config
 gnome-disk-utility
 gnome-epub-thumbnailer
@@ -223,7 +305,7 @@ gvfs-fuse
 gvfs-gphoto2
 gvfs-mtp
 gvfs-smb
-hexchat
+#hexchat
 initial-setup-gui
 libmatekbd
 libmatemixer
@@ -273,8 +355,7 @@ simple-scan
 slick-greeter-mate
 system-config-printer
 system-config-printer-applet
-thunderbird
-transmission-gtk
+#thunderbird
 usermode-gtk
 wireplumber
 xdg-user-dirs-gtk
@@ -302,4 +383,31 @@ NetworkManager-openvpn
 
 # Add alsa-sof-firmware to all images PR #51
 alsa-sof-firmware
+
+
+@development
+podman
+iptables
+curl
+socat
+gcc
+wget
+tar
+make
+gdbm-devel
+libnsl2-devel
+openssl-devel
+bzip2-devel
+libffi-devel
+zlib-devel
+ncurses-devel
+gdbm-libs
+sqlite-devel
+tk-devel
+xz-devel
+libuuid-devel
+tcl-devel
+readline-devel
+epel-release
+
 %end
