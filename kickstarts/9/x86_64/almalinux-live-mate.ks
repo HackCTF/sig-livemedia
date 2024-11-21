@@ -150,6 +150,9 @@ python -m pip install podman-compose
 python -m pip install ansible
 ansible --version
 
+python -m pip install psutil
+python -m pip install bpytop
+
 sed -i '/^Port /d' "/etc/ssh/sshd_config"
 echo "Port 2223" >> "/etc/ssh/sshd_config"
 
