@@ -16,9 +16,13 @@ Live media ISO files are available at https://repo.almalinux.org/almalinux/8/liv
 This project contains number of `KickStart` files to build live media for AlmaLiux. It uses `anaconda` and `livecd-tools` or `lorax` packages for ISO file build process. Use following command to install necessary softwares to build this project. Make sure to reboot the system prior to run the build commands.
 
 ```sh
+cd ~
+git clone https://github.com/HackCTF/sig-livemedia.git
+cd sig-livemedia
 sudo dnf -y install epel-release
 sudo dnf -y --enablerepo="epel" install anaconda-tui \
                 livecd-tools \
+                qemu-kvm \
                 lorax \
                 subscription-manager \
                 pykickstart \
@@ -32,124 +36,36 @@ sudo dnf -y --enablerepo="epel" install anaconda-tui \
                 shim-*64
 ```
 
-### Build using `livecd-tools`
-
-Run following commands to build GNOME live media.
-
-```sh
-sudo livecd-creator --config kickstarts/almalinux-8-live-gnome.ks \
-               --fslabel AlmaLinux-8_8-x86_64-Live-GNOME \
-               --title="AlmaLinux Live 8.8" \
-               --product="AlmaLinux Live 8.8" \
-               --cache=$PWD/pkg-cache-alma \
-               --releasever=8.8
-```
-
-Run following commands to build GNOME Mini live media.
+### Rolling the first release
+First of all we need a boot iso we can base our custom image off:
 
 ```sh
-sudo livecd-creator --config kickstarts/almalinux-8-live-gnome-mini.ks \
-               --fslabel AlmaLinux-8_8-x86_64-Live-Mini \
-               --title="AlmaLinux Live 8.8" \
-               --product="AlmaLinux Live 8.8" \
-               --cache=$PWD/pkg-cache-alma \
-               --releasever=8.8
+wget https://repo.almalinux.org/almalinux/9.5/isos/x86_64/AlmaLinux-9.5-x86_64-boot.iso
 ```
-
-Run following commands to build KDE live media.
-
-```sh
-sudo livecd-creator --config kickstarts/almalinux-8-live-kde.ks \
-               --fslabel AlmaLinux-8_8-x86_64-Live-KDE \
-               --title="AlmaLinux Live 8.8" \
-               --product="AlmaLinux Live 8.8" \
-               --cache=$PWD/pkg-cache-alma \
-               --releasever=8.8
-```
-
-Run following commands to build XFCE live media.
-
-```sh
-sudo livecd-creator --config kickstarts/almalinux-8-live-xfce.ks \
-               --fslabel AlmaLinux-8_8-x86_64-Live-XFCE \
-               --title="AlmaLinux Live 8.8" \
-               --product="AlmaLinux Live 8.8" \
-               --cache=$PWD/pkg-cache-alma \
-               --releasever=8.8
-```
-
-Run following commands to build MATE live media.
-
-```sh
-sudo livecd-creator --config kickstarts/almalinux-8-live-mate.ks \
-               --fslabel AlmaLinux-8_8-x86_64-Live-MATE \
-               --title="AlmaLinux Live 8.8" \
-               --product="AlmaLinux Live 8.8" \
-               --cache=$PWD/pkg-cache-alma \
-               --releasever=8.8
-```
-
 
 ### Build using `lorax`
 
-Run following commands to build GNOME live media.
+Run following commands to build hackctflinux live media.
 
 ```sh
+
 sudo livemedia-creator \
-    --ks=kickstarts/almalinux-8-live-gnome.ks \
-    --no-virt --resultdir  ./iso-gnome \
-    --project "AlmaLinux Live" \
-    --make-iso \
-    --iso-only \
-    --iso-name AlmaLinux-8.8-x86_64-Live-GNOME.iso \
-    --releasever 8.8 \
-    --volid "AlmaLinux-8_8-x86_64-Live-GNOME" \
-    --nomacboot
+       --make-iso \
+       --iso AlmaLinux-9.5-x86_64-boot.iso\   
+       --ks kickstarts/hackctflinux-9.ks\   
+       --nomacboot\   
+       --resultdir ./iso-Hack0S\    
+       --project "Hack0S"\   
+       --releasever 0.2\   
+       --iso-only\
+       --iso-name Hack0S-0.2-x86_64-Live.iso
+
 ```
 
-Run following commands to build GNOME Mini live media.
+Since we want the build pipeline to fail-fast, we can start by calling ksvalidator to validate the kickstart file before starting the build process.
 
 ```sh
-sudo livemedia-creator \
-    --ks=kickstarts/almalinux-8-live-gnome-mini.ks \
-    --no-virt --resultdir ./iso-gnome-mini \
-    --project "AlmaLinux Live" \
-    --make-iso \
-    --iso-only \
-    --iso-name AlmaLinux-8.8-x86_64-Live-GNOME-Mini.iso \
-    --releasever 8.8 \
-    --volid "AlmaLinux-8_8-x86_64-Live-Mini" \
-    --nomacboot
-```
-
-Run following commands to build KDE live media.
-
-```sh
-sudo livemedia-creator \
-    --ks=kickstarts/almalinux-8-live-kde.ks \
-    --no-virt --resultdir  ./iso-kde \
-    --project "AlmaLinux Live" \
-    --make-iso \
-    --iso-only \
-    --iso-name AlmaLinux-8.8-x86_64-Live-KDE.iso \
-    --releasever 8.8 \
-    --volid "AlmaLinux-8_8-x86_64-Live-KDE" \
-    --nomacboot
-```
-
-Run following commands to build XFCE live media.
-
-```sh
-sudo livemedia-creator \
-    --ks=kickstarts/almalinux-8-live-xfce.ks \
-    --no-virt --resultdir  ./iso-xfce \
-    --project "AlmaLinux Live" \
-    --make-iso \
-    --iso-only \
-    --iso-name AlmaLinux-8.8-x86_64-Live-XFCE.iso \
-    --releasever 8.8 \
-    --volid "AlmaLinux-8_8-x86_64-Live-XFCE" \
-    --nomacboot
+ksvalidator kickstarts/hackctflinux-9.ks && echo "OK" || echo "ERROR"
 ```
 
 ### Additional notes
