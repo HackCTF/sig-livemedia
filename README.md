@@ -51,13 +51,13 @@ Run following commands to build hackctflinux live media.
 
 sudo livemedia-creator \
        --make-iso \
-       --iso AlmaLinux-9.4-x86_64-boot\   
-       --ks kickstarts/hackctflinux-9.ks\   
-       --nomacboot\   
-       --resultdir ./iso-Hack0S\    
-       --project "Hack0S"\   
-       --releasever 0.1\   
-       --iso-only\
+       --iso AlmaLinux-9.4-x86_64-boot \   
+       --ks kickstarts/9/x86_64/hackctflinux-9.ks \   
+       --nomacboot \   
+       --resultdir ./iso-Hack0S \    
+       --project "Hack0S" \   
+       --releasever 0.1 \   
+       --iso-only \
        --iso-name Hack0S-0.1-x86_64-Live.iso
 
 ```
