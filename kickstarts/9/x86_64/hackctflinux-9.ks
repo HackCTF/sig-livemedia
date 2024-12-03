@@ -156,22 +156,31 @@ python -m pip install bpytop
 sed -i '/^Port /d' "/etc/ssh/sshd_config"
 echo "Port 2223" >> "/etc/ssh/sshd_config"
 
+wget https://go.dev/dl/go1.23.3.linux-amd64.tar.gz
+tar -xzf go*.linux-amd64.tar.gz -C /usr/local
+rm -f go*.linux-amd64.tar.gz
+sed -i '/^export PATH=$PATH:/usr/local/go/bin' ~/.bashrc
+echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
+source ~/.bashrc
+
+
 # Crear el script de primer arranque
 cat << 'EOF' > /etc/rc.d/firstboot.sh
 #!/bin/bash
 
 git clone https://github.com/HackCTF/ssh_secure_project.git
 cd ssh_secure_project
+python -m pip install -r requirements.txt
 ansible-playbook playbooks/ssh_security.yml
 
 git clone https://github.com/HackCTF/ansible-quay-setup.git
 cd ansible-quay-setup
+python -m pip install -r requirements.txt
 ansible-playbook playbooks/setup.yml
 
-git clone https://github.com/HackCTF/kubespray
-cd kubespray
-python -m pip install -r requirements.txt
-ansible-playbook -i ./inventory/sample/inventory.ini cluster.yml
+sed -i '/^export PATH=$PATH:/usr/local/go/bin' ~/.bashrc
+echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
+source ~/.bashrc
 
 echo "Arranque completado."
 EOF
@@ -191,7 +200,6 @@ chmod +x /etc/rc.d/rc.local
 
 # Habilitar el servicio rc-local
 systemctl enable rc-local
-
 
 EOF
  
