@@ -40,7 +40,7 @@ sudo dnf -y --enablerepo="epel" install anaconda-tui \
 First of all we need a boot iso we can base our custom image off:
 
 ```sh
-wget https://mirror.grid.uchicago.edu/pub/linux/alma/9.4/isos/x86_64/AlmaLinux-9.4-x86_64-boot.iso
+wget https://repo.almalinux.org/almalinux/9.5/isos/x86_64/AlmaLinux-9.5-x86_64-boot.iso
 ```
 
 ### Build using `lorax`
