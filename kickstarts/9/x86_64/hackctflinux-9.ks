@@ -112,7 +112,7 @@ getent passwd openvpn &>/dev/null || \
 
 sudo dnf update -y
 sudo dnf groupinsstall "Development Tools"
-sudo dnf install -y podman iptables curl socat gcc wget tar make
+sudo dnf install -y podman iptables curl socat gcc wget tar make git
 
 
 cd /tmp
