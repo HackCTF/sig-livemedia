@@ -48,22 +48,19 @@ wget https://repo.almalinux.org/almalinux/9.5/isos/x86_64/AlmaLinux-9.5-x86_64-b
 Run following commands to build hackctflinux live media.
 
 ```sh
-
-sudo livemedia-creator \
-       --make-iso \
-       --iso AlmaLinux-9.4-x86_64-boot \   
-       --ks kickstarts/9/x86_64/hackctflinux-9.ks \   
-       --nomacboot \   
-       --resultdir ./iso-Hack0S \    
-       --project "Hack0S" \   
-       --releasever 0.1 \   
-       --iso-only \
-       --iso-name Hack0S-0.1-x86_64-Live.iso
-
-
-
-sudo livemedia-creator --make-iso --iso-only --iso-name=Hack0S-0.1-x86_64-Live.iso --releasever=0.1 --resultdir=./iso-Hack0S --project="Hack0S" --iso=AlmaLinux-9.5-x86_64-boot.iso --ks=kickstarts/9/x86_64/hackctflinux-9.ks --nomacboot
-
+sudo livemedia-creator \ 
+       --make-iso \ 
+       --iso-only \ 
+       --iso-name=Hack0S-0.3-x86_64-Live.iso \ 
+       --releasever=0.3 \ 
+       --resultdir=/root/sig-livemedia/iso-Hack0S \ 
+       --project="Hack0S" \ 
+       --iso=AlmaLinux-9.5-x86_64-boot.iso \ 
+       --ks=/root/sig-livemedia/kickstarts/9/x86_64/hackctflinux-9.ks \ 
+       --nomacboot \ 
+       --ram 60000 \ 
+       --vcpus 64 \ 
+       --no-virt 
 ```
 
 Since we want the build pipeline to fail-fast, we can start by calling ksvalidator to validate the kickstart file before starting the build process.
