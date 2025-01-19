@@ -173,11 +173,6 @@ cd ssh_secure_project
 python -m pip install -r requirements.txt
 ansible-playbook playbooks/ssh_security.yml
 
-git clone https://github.com/HackCTF/ansible-quay-setup.git
-cd ansible-quay-setup
-python -m pip install -r requirements.txt
-ansible-playbook playbooks/setup.yml
-
 sed -i '/^export PATH=$PATH:/usr/local/go/bin' ~/.bashrc
 echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
 source ~/.bashrc
